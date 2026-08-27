@@ -1,0 +1,1 @@
+vuosiluku = float("ilmoita vuosiluku")
