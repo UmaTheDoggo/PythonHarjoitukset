@@ -11,6 +11,6 @@ elif hyttiluokka in ["B", "b"]:
 
 elif hyttiluokka in ["C", "c"]:
     print("C on ikkunaton hytti autokannen alapuolella")
-    
+
 else:
     print("Virheellinen hyttiluokka.")
