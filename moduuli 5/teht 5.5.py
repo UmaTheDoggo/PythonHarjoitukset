@@ -9,6 +9,5 @@ for i in range (5):
             print("Väärä salasana")
     else:
         print("Väärä käyttäjätunnus")
-
 else:
     print("Pääsy evätty")
