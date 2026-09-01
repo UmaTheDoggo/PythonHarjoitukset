@@ -41,3 +41,11 @@ __        __   _                            _          _____ _            ____
 
     if navigation == "quit":
         sys.exit("Quitting game...")
+
+    if navigation == "start":
+        break
+
+time.sleep(1)
+print("Hey, you. You're finally awake! How are you feeling?")
+print("| Good! |     | Bad! |")
+input("Answer!!!!: ")
