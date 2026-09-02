@@ -15,7 +15,7 @@ print(" ")
 player_info = print (f"Hello, {player_name}, Age: {player_age:.0f}")
 
 while True:
-    time.sleep(1)
+    # time.sleep(1)
 
     print("""\
 ------------------------------------------------------------------------------------------------------------------------
@@ -45,7 +45,20 @@ __        __   _                            _          _____ _            ____
     if navigation == "start":
         break
 
-time.sleep(1)
-print("Hey, you. You're finally awake! How are you feeling?")
-print("| Good! |     | Bad! |")
-input("Answer!!!!: ")
+# time.sleep(1)
+print("Stranger: Hey, you. You're finally awake! How are you feeling?")
+print("| Good |     | Bad |")
+answer1 = input(f"{player_name}: ").lower()
+if answer1 == "good":
+        print("Stranger: I highly doubt that. It's like you fell from the heavens.")
+elif answer1 == "bad":
+        print("Stranger: I figured. You just fell from the sky.")
+else:
+    print("Stranger: Hmm... Not quite sure if I understand. You took a bit of a fall.")
+
+time.sleep(2)
+print("Stranger: Do you remember your name?")
+time.sleep(2)
+print(f"{player_name}: Yes, my name is {player_name}.")
+time.sleep(2)
+print(f"Gratos: Haha, nice to meet you {player_name}! My name is Gratos.")
