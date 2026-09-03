@@ -1,6 +1,10 @@
 import sys
 import time
 
+hat_color = None
+jacket_color = None
+jeans_color = None
+
 #player name
 player_name = input("Enter your name: ")
 
@@ -31,13 +35,28 @@ __        __   _                            _          _____ _            ____
 """)
     
     navigation = input("Type to navigate: ").lower()
-    if navigation == "info":
-        print(f"Name: {player_name}, Age {player_age:.0f}")
-
     if navigation == "customise":
         hat_color = input("Choose the color of the hat: ").lower()
         jacket_color = input("Choose the color of the jacket: ").lower()
         jeans_color = input("Choose the color of the jeans: ").lower()
+
+    if navigation == "info":
+        print(f"Name: {player_name}, Age {player_age:.0f}")
+
+        if hat_color is None:
+            print("Color of hat not set")
+        else:
+             print(f"Color of hat: {hat_color}")
+
+        if jacket_color is None:
+            print("Color of jacket not set")
+        else:
+            print(f"Color of jacket: {jacket_color}")
+
+        if jeans_color is None:
+            print("Color of jeans not set")
+        else:
+             print(f"Color of jeans: {jeans_color}")
 
     if navigation == "quit":
         sys.exit("Quitting game...")
@@ -45,7 +64,11 @@ __        __   _                            _          _____ _            ____
     if navigation == "start":
         break
 
-# time.sleep(1)
+if hat_color is None:
+    hat_color = input("Choose the color of the hat: ").lower()
+    jacket_color = input("Choose the color of the jacket: ").lower()
+    jeans_color = input("Choose the color of the jeans: ").lower()
+
 print("Stranger: Hey, you. You're finally awake! How are you feeling?")
 print("| Good |     | Bad |")
 answer1 = input(f"{player_name}: ").lower()
