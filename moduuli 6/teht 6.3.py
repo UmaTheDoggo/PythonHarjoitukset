@@ -7,6 +7,7 @@ if luku > 1:
         if luku % i == 0:
             alkuluku = False
             break
+        
     if alkuluku:
         print(f"luku: {luku} on alkuluku")
     else:
