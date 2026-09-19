@@ -87,5 +87,18 @@ print("Gratos: It seems you do not have a weapon yet. Here in the dungeon you wi
 time.sleep(2)
 print("Gratos: I don't have much, but you can choose one from me.")
 print("Sword (5 dmg)  |  Axe (7 dmg)  |  Napkin (0 dmg)")
-custom.choose_weapon = input("Choose weapon: ").lower()
-print(f"Gratos: Ahhh, good old {custom.choose_weapon}")
+
+while True:
+    custom.weapon = input("Choose weapon: ").lower()
+    
+    if custom.weapon == "sword" or custom.weapon == "axe":
+        print(f"Gratos: Ahhh, good old {custom.weapon}")
+        break
+        
+    elif custom.weapon == "napkin":
+        print(f"Gratos: Are you serious??? I can't let you go with a napkin!")
+        
+    else:
+        print("Gratos: That's not a valid weapon. Try again.")
+
+print(f"Gratos: {player_name} WATCH OUT! A GOBLIN!")
