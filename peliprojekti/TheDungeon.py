@@ -1,6 +1,13 @@
 import sys
 import time
 import custom
+from weapons import Weapon
+from monsters import Monster
+
+sword = Weapon("Sword", 5, 4)
+axe = Weapon("Axe", 7, 3)
+
+goblin = Monster("Goblin", 10)
 
 #player name
 player_name = input("Enter your name: ")
@@ -86,19 +93,70 @@ time.sleep(2)
 print("Gratos: It seems you do not have a weapon yet. Here in the dungeon you will need one.")
 time.sleep(2)
 print("Gratos: I don't have much, but you can choose one from me.")
-print("Sword (5 dmg)  |  Axe (7 dmg)  |  Napkin (0 dmg)")
+print("Sword (5 dmg), 4/6 hit chance |  Axe (7 dmg), 3/6 hit chance |  Napkin (0 dmg)")
 
 while True:
-    custom.weapon = input("Choose weapon: ").lower()
+    weapon_choice = input("Choose weapon: ").lower()
     
-    if custom.weapon == "sword" or custom.weapon == "axe":
-        print(f"Gratos: Ahhh, good old {custom.weapon}")
+    if weapon_choice == "sword":
+        custom.weapon = sword
+        print(f"Gratos: Ahhh, good old {custom.weapon.name}")
         break
         
-    elif custom.weapon == "napkin":
+    elif weapon_choice == "axe":
+        custom.weapon = axe
+        print(f"Gratos: Ahhh, good old {custom.weapon.name}")
+        break
+        
+    elif weapon_choice == "napkin":
         print(f"Gratos: Are you serious??? I can't let you go with a napkin!")
         
     else:
         print("Gratos: That's not a valid weapon. Try again.")
 
-print(f"Gratos: {player_name} WATCH OUT! A GOBLIN!")
+print(f"Gratos: {player_name} WATCH OUT! A .....")
+time.sleep(1)
+time.sleep(1)
+time.sleep(1)
+print(f"{player_name}: Wha... Where am I?")
+time.sleep(1)
+print(f"{player_name}: Huh..? How did I end up in the Dungeon?")
+print(f"{player_name}: It's dangerous, I need to move.")
+time.sleep(1)
+print(f"{player_name}: There's something in my pocket... A poster?")
+print("""\
+_______________________________________________
+--THE LOCAL DUNGEON RELEASING TOXINS TO LAKES--
+-----------------------------------------------
+A local Goblin master is running an illegal ge-
+nerator in the dungeon which releases toxins
+to the nearby lake. Villagers have been...
+_______________________________________________
+
+.... Rest of the page was torn. 
+""")
+
+time.sleep(3)
+print(f"{player_name}: I need to stop the Goblin master!")
+time.sleep(1)
+print(f"A goblin starts running towards {player_name} What do you do?")
+print("|   Run   |     |   Attack   |")
+
+choice1 = input("Choose path: ").lower()
+
+if choice1 == "run":
+     print("You ran past the goblin and ended up in a different room")
+
+elif choice1 == "attack":
+    while goblin.HP > 0:
+        input("Press Enter to attack!")
+
+        if custom.weapon.attack():
+            print(f"You swing your {custom.weapon.name} and hit the {goblin.name} for {custom.weapon.damage} damage!")
+            goblin.take_damage(custom.weapon.damage)
+            print(f"The {goblin.name} has now {goblin.HP} health.")
+        else:
+            print(f"The {goblin.name} backed down.")
+
+else:
+    print(f"You swing your {custom.weapon.name}, but you missed!")
