@@ -1,29 +1,30 @@
-class Kirja:
-    def __init__(self, nimi, kirjoittaja, sivumäärä):
+class Julkaisu:
+    def __init__(self, nimi):
         self.nimi = nimi
+
+class Lehti(Julkaisu):
+    def __init__(self, nimi, päätoimittaja):
+        self.päätoimittaja = päätoimittaja
+        super().__init__(nimi)
+
+    def tulosta_tiedot(self):
+        print(f"Nimi: {self.nimi} Päätoimittaja: {self.päätoimittaja}")
+
+class Kirja(Julkaisu):
+    def __init__(self, nimi, kirjoittaja, sivumäärä):
         self.kirjoittaja = kirjoittaja
         self.sivumäärä = sivumäärä
+        super().__init__(nimi)
 
     def tulosta_tiedot(self):
-        print(f"Kirjan nimi: {self.nimi}, Kirjoittaja: {self.kirjoittaja}, Sivumäärä: {self.sivumäärä}")
+        print(f"Nimi: {self.nimi} Kirjoittaja: {self.kirjoittaja} Sivumäärä: {self.sivumäärä}")
 
-class Lehti:
-    def __init__(self, nimi, päätoimittaja, sivumäärä):
-        self.nimi = nimi
-        self.päätoimittaja = päätoimittaja
-        self.sivumäärä = sivumäärä
+def main():
+    lehti1 = Lehti("Aku Ankka", "Aki Hyyppä")
+    kirja1 = Kirja("Hytti n:o 6", "Rosa Liksom", 200)
 
-    def tulosta_tiedot(self):
-        print(f"Lehden nimi: {self.nimi}, Päätoimittaja: {self.päätoimittaja}, Sivumäärä: {self.sivumäärä}")
-        
+    lehti1.tulosta_tiedot()
+    kirja1.tulosta_tiedot()
 
-# main
-julkaisut = []
-kirja1 = Kirja("Hytti n:o 6", "Rosa Liksom", 200)
-julkaisut.append(kirja1)
-
-lehti1 = Lehti("Aku Ankka", "Aki Hyyppä", 30)
-julkaisut.append(lehti1)
-
-for t in julkaisut:
-    t.tulosta_tiedot()
+if __name__ == "__main__":
+    main()

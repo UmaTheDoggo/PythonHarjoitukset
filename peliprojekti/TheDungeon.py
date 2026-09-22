@@ -4,6 +4,7 @@ import custom
 from weapons import Weapon
 from monsters import Monster
 from room import Room
+from PlayerInfo import Player
 
 #weapons and monsters
 sword = Weapon("Sword", 5, 4)
@@ -35,9 +36,12 @@ current_room = level1Center
 
 #dungeon monsters
 level1Left.monster = GGoblin
+level1Right.monster = GGoblin
+level2Center.monster = MGoblin
 
-#player name
+#player
 player_name = input("Enter your name: ")
+player = Player(player_name, HP=100, inventory=None)
 
 #player age
 player_age = float(input("Enter your age: "))
@@ -67,38 +71,38 @@ __        __   _                            _          _____ _            ____
     
     navigation = input("Type to navigate: ").lower()
     if navigation == "customise":
-        custom.hat_color = input("Enter a hat color: ").lower()
-        custom.jacket_color = input("Enter jacket color: ").lower()
-        custom.jeans_color = input("Enter jeans color: ").lower()
+        player.hat_color = input("Enter a hat color: ").lower()
+        player.jacket_color = input("Enter jacket color: ").lower()
+        player.jeans_color = input("Enter jeans color: ").lower()
 
     if navigation == "info":
-        print(f"Name: {player_name}, Age {player_age:.0f}")
+        print(f"Name: {player.name}, Age {player_age:.0f}")
 
-        if custom.hat_color is None:
+        if player.hat_color is None:
             print("Color of hat not set")
         else:
-             print(f"Color of hat: {custom.hat_color}")
+             print(f"Color of hat: {player.hat_color}")
 
-        if custom.jacket_color is None:
+        if player.jacket_color is None:
             print("Color of jacket not set")
         else:
-            print(f"Color of jacket: {custom.jacket_color}")
+            print(f"Color of jacket: {player.jacket_color}")
 
-        if custom.jeans_color is None:
+        if player.jeans_color is None:
             print("Color of jeans not set")
         else:
-             print(f"Color of jeans: {custom.jeans_color}")
-
+             print(f"Color of jeans: {player.jeans_color}")
+             
     if navigation == "quit":
         sys.exit("Quitting game...")
 
     if navigation == "start":
         break
 
-if custom.hat_color is None:
-    custom.hat_color = input("Choose the color of the hat: ").lower()
-    custom.jacket_color = input("Choose the color of the jacket: ").lower()
-    custom.jeans_color = input("Choose the color of the jeans: ").lower()
+if Player.set_hat_color is None:
+    Player.hat_color = input("Choose the color of the hat: ").lower()
+    Player.jacket_color = input("Choose the color of the jacket: ").lower()
+    Player.jeans_color = input("Choose the color of the jeans: ").lower()
 
 print("Stranger: Hey, you. You're finally awake! How are you feeling?")
 print("| Good |     | Bad |")
