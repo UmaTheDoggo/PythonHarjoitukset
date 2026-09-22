@@ -3,11 +3,38 @@ import time
 import custom
 from weapons import Weapon
 from monsters import Monster
+from room import Room
 
+#weapons and monsters
 sword = Weapon("Sword", 5, 4)
 axe = Weapon("Axe", 7, 3)
 
 goblin = Monster("Goblin", 10)
+GGoblin = Monster("Giant Goblin", 50)
+MGoblin = Monster("Goblin Master", 100)
+
+#luodaan kartta
+level1Center = Room("Starting place", "I can go left or right")
+level1Left = Room("Left from the starting place", "I can go forward") # GGoblin
+level1Right = Room("Right from the starting place", "I can go forward") # GGoblin 
+
+level2Center = Room("The Goblin master room", "I need to defeat the Goblin master") # Fight start
+level2Left = Room("Treatment room", "Health upgrade laying on the ground") # Health upgrade +100 HP
+level2Right = Room("An armory", "There is an anvil. I could sharpen my weapon") # Weapon upgrade +10 dmg
+
+level1Center.add_exit("left", level1Left)
+level1Center.add_exit("right", level1Right)
+
+level1Left.add_exit("forward", level2Left) # GGoblin
+level2Left.add_exit("right", level2Center)
+
+level1Right.add_exit("forward", level2Right) #GGoblin
+level2Right.add_exit("left", level2Center)
+
+current_room = level1Center
+
+#dungeon monsters
+level1Left.monster = GGoblin
 
 #player name
 player_name = input("Enter your name: ")
@@ -156,7 +183,30 @@ elif choice1 == "attack":
             goblin.take_damage(custom.weapon.damage)
             print(f"The {goblin.name} has now {goblin.HP} health.")
         else:
-            print(f"The {goblin.name} backed down.")
+            print(f"You swing your {custom.weapon.name}, but you missed!")
 
-else:
-    print(f"You swing your {custom.weapon.name}, but you missed!")
+
+print(f"The {goblin.name} dropped what looks like a piece of paper.")
+time.sleep(2)
+print("MAP") # |=|
+
+while True:
+    print(f"{current_room.name}")
+    print(current_room.description)
+
+    if current_room.monster and current_room.monster.HP > 0:
+        print(f"{current_room.monster.name} is blocking your way.")
+
+    available_exits = list(current_room.exits.keys())
+    print(f"Exits available: {', '.join(available_exits)}")
+
+    move = input("Where do you want to move?: ").lower()
+
+    if move == "quit":
+        print("Quitting game...")
+        break
+
+    if move in current_room.exits:
+        current_room = current_room.exits[move]
+    else:
+        print("A stone wall is blocking the way")
