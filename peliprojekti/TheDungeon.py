@@ -10,9 +10,9 @@ from PlayerInfo import Player
 sword = Weapon("Sword", 5, 4)
 axe = Weapon("Axe", 7, 3)
 
-goblin = Monster("Goblin", 10)
-GGoblin = Monster("Giant Goblin", 50)
-MGoblin = Monster("Goblin Master", 100)
+goblin = Monster("Goblin", 10, 5)
+GGoblin = Monster("Giant Goblin", 50, 10)
+MGoblin = Monster("Goblin Master", 100, 15)
 
 #luodaan kartta
 level1Center = Room("Starting place", "I can go left or right")
@@ -188,7 +188,9 @@ elif choice1 == "attack":
             goblin.take_damage(custom.weapon.damage)
             print(f"The {goblin.name} has now {goblin.HP} health.")
         else:
-            print(f"You swing your {custom.weapon.name}, but you missed!")
+            print(f"You swing your {custom.weapon.name}, but you missed! You took 5 damage.")
+            print(f"OUCH: {player.HP - goblin.deal_damage}")
+            print(f"(Your health has decreased to: {player.HP} HP.")
 
     print("Where to go next)")
     # print(f"The {goblin.name} dropped what looks like a piece of paper.")
@@ -227,6 +229,8 @@ while True:
                 print("I need to decide.")
 
     if current_room == level2Right:
+        player.HP = 100
+        print(f"Checkpoint reached. Health restored to {player.HP}")
         if "smithing stone" in player.inventory:
             print("Upgrade weapon?:\n    | Yes |    | No |")
             while True:
