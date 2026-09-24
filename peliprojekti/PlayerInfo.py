@@ -21,3 +21,14 @@ class Player:
 
     def set_jeans_color(self, color):
         self.jeans_color = color
+
+    def take_damage(self, amount):
+        self.HP -= amount
+        print(f"{self.name} took damage. I have {self.HP} of health left")
+        self.HitDetect()
+
+    def HitDetect(self):
+        if self.HP <= 0:
+            print(f"{self.name}: You lost.")
+            return True
+        return False

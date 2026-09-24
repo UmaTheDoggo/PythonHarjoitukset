@@ -12,7 +12,6 @@ class Monster:
     def deal_damage(self, amount):
         self.deals = amount
         print(f"{self.name} dealt {self.deals} of damage.")
-        self.HitDeal()
 
     def HitDetect(self):
         if self.HP <= 0:

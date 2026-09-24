@@ -8,13 +8,14 @@ from PlayerInfo import Player
 
 #weapons and monsters
 sword = Weapon("Sword", 5, 4)
-axe = Weapon("Axe", 7, 3)
+axe = Weapon("Axe", 7, 0) # debuggauksen ajaksi asetettu 0 alkup. 4
 
 goblin = Monster("Goblin", 10, 5)
 GGoblin = Monster("Giant Goblin", 50, 10)
 MGoblin = Monster("Goblin Master", 100, 15)
 
 #luodaan kartta
+level0Start = Room("Fields", "A peaceful spot under a tree") # pelaajan aloitushuone ennen dungeoniin menemistä
 level1Center = Room("Starting place", "I can go left or right")
 level1Left = Room("Left from the starting place", "I can go forward") # GGoblin + syringe
 level1Right = Room("Right from the starting place", "I can go forward") # GGoblin + smithing stone
@@ -32,9 +33,10 @@ level2Left.add_exit("right", level2Center)
 level1Right.add_exit("forward", level2Right) #GGoblin ja upgrade flint joka appendataan listaan, jolla päivitetään ase
 level2Right.add_exit("left", level2Center)
 
-current_room = level1Center
+current_room = level0Start
 
 #dungeon monsters
+level1Center.monster = goblin
 level1Left.monster = GGoblin
 level1Right.monster = GGoblin
 level2Center.monster = MGoblin
@@ -168,29 +170,32 @@ _______________________________________________
 """)
 
 # time.sleep(3)
-print(f"{player_name}: I need to stop the Goblin master!")
+print(f"{player_name}: I need to stop the Goblin Master!")
 # time.sleep(1)
-print(f"A goblin starts running towards {player_name} What do you do?")
+current_room = level1Center
+print(f"A {current_room.monster.name} starts running towards {player_name} What do you do?")
 print("|   Run   |     |   Attack   |")
 
 choice1 = input("Choose path: ").lower()
 
 if choice1 == "run":
-     print("You ran past the goblin and ended up in a different room")
+     print(f"You ran past the {current_room.monster.name} and ended up in a different room")
      current_room = level1Left
 
 elif choice1 == "attack":
-    while goblin.HP > 0:
-        input("Press Enter to attack!")
+    while current_room.monster.HP > 0:
+        input(f"Press Enter to attack the {current_room.monster.name}!")
 
         if custom.weapon.attack():
-            print(f"You swing your {custom.weapon.name} and hit the {goblin.name} for {custom.weapon.damage} damage!")
+            print(f"You swing your {custom.weapon.name} and hit the {current_room.monster.name} for {custom.weapon.damage} damage!")
             goblin.take_damage(custom.weapon.damage)
-            print(f"The {goblin.name} has now {goblin.HP} health.")
+            print(f"The {current_room.monster.name} has now {current_room.monster.HP} health.")
         else:
             print(f"You swing your {custom.weapon.name}, but you missed! You took 5 damage.")
-            print(f"OUCH: {player.HP - goblin.deal_damage}")
-            print(f"(Your health has decreased to: {player.HP} HP.")
+            player.take_damage(5)
+            #print(f"(Your health has decreased to: {player.HP} HP.")
+            if player.HP <=0:
+                sys.exit(f"You were slain by {current_room.monster.name}")
 
     print("Where to go next)")
     # print(f"The {goblin.name} dropped what looks like a piece of paper.")
