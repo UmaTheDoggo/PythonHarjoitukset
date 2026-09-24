@@ -8,7 +8,7 @@ from PlayerInfo import Player
 
 #weapons and monsters
 sword = Weapon("Sword", 5, 4)
-axe = Weapon("Axe", 7, 0) # debuggauksen ajaksi asetettu 0 alkup. 4
+axe = Weapon("Axe", 7, 3)
 
 goblin = Monster("Goblin", 10, 5)
 GGoblin = Monster("Giant Goblin", 50, 10)
@@ -174,33 +174,32 @@ print(f"{player_name}: I need to stop the Goblin Master!")
 # time.sleep(1)
 current_room = level1Center
 print(f"A {current_room.monster.name} starts running towards {player_name} What do you do?")
-print("|   Run   |     |   Attack   |")
 
-choice1 = input("Choose path: ").lower()
+while True:
+    print("|   Run   |     |   Attack   |")
+    choice1 = input("Choose path: ").lower()
 
-if choice1 == "run":
-     print(f"You ran past the {current_room.monster.name} and ended up in a different room")
-     current_room = level1Left
+    if choice1 == "run":
+        print(f"You ran past the {current_room.monster.name} and ended up in a different room")
+        current_room = level1Left
+        break
 
-elif choice1 == "attack":
-    while current_room.monster.HP > 0:
-        input(f"Press Enter to attack the {current_room.monster.name}!")
+    elif choice1 == "attack":
+        while current_room.monster.HP > 0:
+            input(f"Press Enter to attack the {current_room.monster.name}!")
 
-        if custom.weapon.attack():
-            print(f"You swing your {custom.weapon.name} and hit the {current_room.monster.name} for {custom.weapon.damage} damage!")
-            goblin.take_damage(custom.weapon.damage)
-            print(f"The {current_room.monster.name} has now {current_room.monster.HP} health.")
-        else:
-            print(f"You swing your {custom.weapon.name}, but you missed! You took 5 damage.")
-            player.take_damage(5)
-            #print(f"(Your health has decreased to: {player.HP} HP.")
-            if player.HP <=0:
-                sys.exit(f"You were slain by {current_room.monster.name}")
-
-    print("Where to go next)")
-    # print(f"The {goblin.name} dropped what looks like a piece of paper.")
-    # # time.sleep(2)
-    # print("MAP") # |=|
+            if custom.weapon.attack():
+                print(f"You swing your {custom.weapon.name} and hit the {current_room.monster.name} for {custom.weapon.damage} damage!")
+                goblin.take_damage(custom.weapon.damage)
+                print(f"The {current_room.monster.name} has now {current_room.monster.HP} health.")
+            else:
+                print(f"You swing your {custom.weapon.name}, but you missed! You took 5 damage.")
+                player.take_damage(5)
+                if player.HP <=0:
+                    sys.exit(f"You were slain by {current_room.monster.name}")
+        break
+    else:
+        print("I need to decide quickly!!!")
 
 
 while True:
@@ -234,6 +233,7 @@ while True:
                 print("I need to decide.")
 
     if current_room == level2Right:
+        #time.sleep(2)
         player.HP = 100
         print(f"Checkpoint reached. Health restored to {player.HP}")
         if "smithing stone" in player.inventory:
