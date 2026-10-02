@@ -15,6 +15,6 @@ class Monster:
 
     def HitDetect(self):
         if self.HP <= 0:
-            print(f"{self.name} backed down.")
+            print(f"{self.name} backed down.\n")
             return True
         return False

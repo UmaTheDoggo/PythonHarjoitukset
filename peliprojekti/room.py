@@ -4,6 +4,7 @@ class Room:
         self.description = description
         self.exits = {}
         self.monster = None
+        self.item_collected = False
 
     def add_exit(self, direction, room):
         self.exits[direction] = room
