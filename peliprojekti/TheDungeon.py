@@ -5,10 +5,11 @@ from weapons import Weapon
 from monsters import Monster
 from room import Room
 from PlayerInfo import Player
+import json
 
 #weapons and monsters
-sword = Weapon("Sword", 5, 4)
-axe = Weapon("Axe", 7, 3)
+sword = Weapon("Sword", 6, 4)
+axe = Weapon("Axe", 10, 3)
 
 goblin = Monster("Goblin", 10, 5)
 GGoblin = Monster("Giant Goblin", 50, 10)
@@ -46,7 +47,14 @@ player_name = input("Enter your name: ")
 player = Player(player_name, HP=100, inventory=[])
 
 #player age
-player_age = float(input("Enter your age: "))
+while True:
+    try:
+        player_age = int(input("Enter your age: "))
+        break
+    except ValueError:
+        print("Error: Set value is not a number. Try again")
+    print(f"Player age: {player_age}.")
+
 if player_age < 12:
     sys.exit("This game is meant for people over the age of 12. Quitting game.")
 
@@ -54,6 +62,14 @@ print(" ")
 
 #player info
 player_info = print (f"Hello, {player_name}, Age: {player_age:.0f}")
+
+# save.txt = {
+#     "Player": Player.Name,
+#     "level": current_room
+#     "Inventory": Player.inventory
+#     "Weapon": Player.choose_weapon
+# }
+
 
 while True:
     # time.sleep(1)
@@ -171,6 +187,10 @@ _______________________________________________
 
 # time.sleep(3)
 print(f"{player_name}: I need to stop the Goblin Master!")
+
+with open("save.txt", "w") as document:
+    document.write("Player in dungeon.")
+
 # time.sleep(1)
 current_room = level1Center
 print(f"A {current_room.monster.name} starts running towards {player_name} What do you do?")
@@ -191,9 +211,9 @@ while True:
             if custom.weapon.attack():
                 print(f"You swing your {custom.weapon.name} and hit the {current_room.monster.name} for {custom.weapon.damage} damage!")
                 goblin.take_damage(custom.weapon.damage)
-                print(f"The {current_room.monster.name} has now {current_room.monster.HP} health.")
+                print(f"The {current_room.monster.name} has now {current_room.monster.HP} health.\n")
             else:
-                print(f"You swing your {custom.weapon.name}, but you missed! You took 5 damage.")
+                print(f"You swing your {custom.weapon.name}, but you missed! You took 5 damage.\n")
                 player.take_damage(5)
                 if player.HP <=0:
                     sys.exit(f"You were slain by {current_room.monster.name}")
@@ -212,22 +232,39 @@ while True:
                 input("Press Enter to attack!")
         
                 if custom.weapon.attack():
-                    print(f"You swing your {custom.weapon.name} and hit the {current_room.monster.name} for {custom.weapon.damage} damage!")
+                    print(f"You swing your {custom.weapon.name} and hit the {current_room.monster.name} for {custom.weapon.damage} damage!\n")
                     GGoblin.take_damage(custom.weapon.damage)
                     print(f"The {current_room.monster.name} has now {current_room.monster.HP} health.")
                 else:
-                    print(f"You swing your {custom.weapon.name}, but you missed!")
+                    print(f"You swing your {custom.weapon.name}, but you missed!\n")
+                    player.take_damage(10)
+                    if player.HP <=0:
+                        sys.exit(f"You were slain by {current_room.monster.name}")
 
     if current_room == level1Right:
         print(f"The {current_room.monster.name} dropped a smithing stone in the ground")
         while True:
-            choice2 = input("Take the smithing stone?:\n     | YES |     | NO |\n").lower()
-            if choice2 == "yes":
+            choiceStone = input("Take the smithing stone?:\n     | YES |     | NO |\n").lower()
+            if choiceStone == "yes":
                 player.inventory.append("smithing stone")
-                print("Obtained: Smithing stone for a weapon upgrade. Type 'inventory' to check pockets")
+                print("Obtained: Smithing stone for a possible weapon upgrade. Type 'inventory' to check pockets.")
                 break
-            if choice2 == "no":
+            if choiceStone == "no":
                 print("No... I don't think i'll need a rock.")
+                break
+            else:
+                print("I need to decide.")
+
+    if current_room == level1Left:
+        print(f"The {current_room.monster.name} dropped a syringe.")
+        while True:
+            ChoiceHealth = input("Take the syringe?:\n     | YES |     | NO |\n").lower()
+            if ChoiceHealth == "yes":
+                player.inventory.append("syringe")
+                print("Obtained syringe for a possible health upgrade. Type 'inventory' to check pockets.")
+                break
+            if ChoiceHealth == "no":
+                print("I am not touching that... yuck.")
                 break
             else:
                 print("I need to decide.")
@@ -239,20 +276,40 @@ while True:
         if "smithing stone" in player.inventory:
             print("Upgrade weapon?:\n    | Yes |    | No |")
             while True:
-                choice3 = input("Upgrade weapon for +10 damage?: ").lower()
+                choiceUpgrade = input("Use smithing stone and upgrade weapon for +10 damage?: ").lower()
 
-                if choice3 == "yes":
+                if choiceUpgrade == "yes":
                     custom.weapon.damage += 10
                     player.inventory.remove("smithing stone")
                     print(f"{custom.weapon.name} upgraded for +10! It now deals {custom.weapon.damage} damage.")
                     break
 
-                if choice3 == "no":
+                if choiceUpgrade == "no":
                     print(f"Nah.. Upgrades are for noobs.")
                     break
 
                 else:
                     print("I need to decide.")
+
+    if current_room == level2Left:
+        if "syringe" in player.inventory:
+            print("Upgrade health?:\n    | Yes |    | No |")
+            choiceHealthU = input("Use syringe and upgrade health to 200?:\n").lower()
+            
+            if choiceHealthU == "yes":
+                player.HP = 200
+                print(f"{player.name} health set to {player.HP} HP.")
+                break
+
+            if choiceHealthU == "no":
+                print(f"{player.name}: Nahh, I ain't a noob!")
+                player.HP = 100
+                print(f"Checkpoint reached {player.name} health set to {player.HP}")
+                break
+
+            else:
+                print("I need to decide!")
+
 
     available_exits = list(current_room.exits.keys())
     print(f"Exits available: {', '.join(available_exits)}")
@@ -269,4 +326,4 @@ while True:
         print("A stone wall is blocking the way")
 
     if move == "inventory":
-        print(f"Inventory: {player.inventory}")
+        print(f"\nInventory: {player.inventory}\n")
