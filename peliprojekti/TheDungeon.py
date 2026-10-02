@@ -8,12 +8,12 @@ from PlayerInfo import Player
 import json
 
 #weapons and monsters
-sword = Weapon("Sword", 6, 4)
-axe = Weapon("Axe", 10, 3)
+sword = Weapon("Sword", 6, 5)
+axe = Weapon("Axe", 12, 4)
 
 goblin = Monster("Goblin", 10, 5)
 GGoblin = Monster("Giant Goblin", 50, 10)
-MGoblin = Monster("Goblin Master", 100, 20)
+MGoblin = Monster("Goblin Master", 100, 40)
 
 #luodaan kartta
 level0Start = Room("Fields", "A peaceful spot under a tree") # pelaajan aloitushuone ennen dungeoniin menemistä
@@ -148,7 +148,7 @@ print(f"Gratos: Haha, nice to meet you {player_name}! My name is Gratos.")
 print("Gratos: It seems you do not have a weapon yet. Here in the dungeon you will need one.")
 # time.sleep(2)
 print("Gratos: I don't have much, but you can choose one from me.")
-print("Sword (5 dmg), 4/6 hit chance |  Axe (7 dmg), 3/6 hit chance |  Napkin (0 dmg)")
+print("Sword (6 dmg), 5/6 hit chance |  Axe (12 dmg), 4/6 hit chance |  Napkin (0 dmg)")
 
 while True:
     weapon_choice = input("Choose weapon: ").lower()
@@ -216,7 +216,7 @@ while True:
 
             if custom.weapon.attack():
                 print(f"You swing your {custom.weapon.name} and hit the {current_room.monster.name} for {custom.weapon.damage} damage!")
-                goblin.take_damage(custom.weapon.damage)
+                current_room.monster.take_damage(custom.weapon.damage)
                 #print(f"The {current_room.monster.name} has now {current_room.monster.HP} health.\n")
             else:
                 print(f"You swing your {custom.weapon.name}, but you missed! You took 5 damage.\n")
@@ -235,15 +235,15 @@ while True:
     if current_room.monster and current_room.monster.HP > 0:
         print(f"{current_room.monster.name} is blocking your way.")
         while current_room.monster.HP > 0:
-                input("Press Enter to attack!")
+                input("Press Enter to attack!\n")
         
                 if custom.weapon.attack():
-                    print(f"You swing your {custom.weapon.name} and hit the {current_room.monster.name} for {custom.weapon.damage} damage!\n")
+                    print(f"You swing your {custom.weapon.name} and hit the {current_room.monster.name} for {custom.weapon.damage} damage!")
                     current_room.monster.take_damage(custom.weapon.damage)
-                    print(f"The {current_room.monster.name} has now {current_room.monster.HP} health.")
+                    #print(f"The {current_room.monster.name} has now {current_room.monster.HP} health.")
                 else:
-                    print(f"You swing your {custom.weapon.name}, but you missed!\n")
-                    player.take_damage(10)
+                    print(f"You swing your {custom.weapon.name}, but you missed!")
+                    player.take_damage(current_room.monster.deals)
                     if player.HP <=0:
                         sys.exit(f"You were slain by {current_room.monster.name}")
 
@@ -306,17 +306,17 @@ while True:
             
             if choiceHealthU == "yes":
                 player.HP = 200
-                print(f"{player.name} health set to {player.HP} HP.")
+                print(f"{player.name}'s health set to {player.HP} HP.")
 
             if choiceHealthU == "no":
                 print(f"{player.name}: Nahh, I ain't a noob!")
                 player.HP = 100
                 print(f"Checkpoint reached {player.name} health set to {player.HP}")
 
-            else:
-                print("I need to decide!")
+        else:
+            print("I need to decide!")
     
-    if current_room == level2Center:
+    if current_room == level2Center and not current_room.item_collected:
         print("The generator is here. I can break it in pieces to upgrade my gear and stop the pollution.")
         time.sleep(1)
         print("Riks")
@@ -326,6 +326,7 @@ while True:
         print("Poks")
         player.HP += 50
         custom.weapon.damage += 10
+        current_room.item_collected = True
         print(f"{player.name}: Oh yeeah!\n Weapon damage upgraded to {custom.weapon.damage}\n Health upgraded to {player.HP}.")
         time.sleep(1)
         print(f"{player.name}: I am ready to take the Goblin Master down!")

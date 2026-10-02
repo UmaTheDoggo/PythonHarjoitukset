@@ -6,7 +6,7 @@ class Monster:
 
     def take_damage(self, amount):
         self.HP -= amount
-        print(f"{self.name} took damage, it has {self.HP} of health left")
+        print(f"{self.name} took damage, it has {self.HP} of health left\n")
         self.HitDetect()
 
     def deal_damage(self, amount):
