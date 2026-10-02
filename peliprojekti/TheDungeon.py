@@ -8,33 +8,40 @@ from PlayerInfo import Player
 import json
 
 #weapons and monsters
-sword = Weapon("Sword", 6, 5)
-axe = Weapon("Axe", 12, 4)
+sword = Weapon("Sword", 6, 4)
+axe = Weapon("Axe", 12, 3)
 
-goblin = Monster("Goblin", 10, 5)
+goblin = Monster("Goblin", 20, 5)
 GGoblin = Monster("Giant Goblin", 50, 10)
-MGoblin = Monster("Goblin Master", 100, 40)
+MGoblin = Monster("Goblin Master", 100, 30)
 
 #luodaan kartta
 level0Start = Room("Fields", "A peaceful spot under a tree") # pelaajan aloitushuone ennen dungeoniin menemistä
 level0End = Room("Fields", "You see Gratos waving at you...")
 level1Center = Room("Starting place", "I can go left or right")
-level1Left = Room("Left from the starting place", "I can go forward") # GGoblin + syringe
-level1Right = Room("Right from the starting place", "I can go forward") # GGoblin + smithing stone
+level1Left = Room("Left from the starting place", "I can go forward.") # GGoblin + syringe
+level1Right = Room("Right from the starting place", "I can go forward.") # GGoblin + smithing stone
+level1Behind = Room("A huge staircase leads down", "I can go forward.")
 
 level2Center = Room("Generator room", "Turn the generator into gear") # upgrade gear
 level2Left = Room("Treatment room", "Health upgrade laying on the ground") # Health upgrade +100 HP
 level2Right = Room("An armory", "There is an anvil. I could sharpen my weapon") # Weapon upgrade +10 dmg
 level3Center = Room("The Goblin Master room", "A throneroom full of gold and diamonds.")# fight
+level2Behind = Room("A dim room", "He came to the dungeon looking for you.") # teamup with gratos
+
 
 level1Center.add_exit("left", level1Left)
 level1Center.add_exit("right", level1Right)
+level1Center.add_exit("behind", level1Behind)
 
 level1Left.add_exit("forward", level2Left) # GGoblin + Syringe jolla otetaan health upgrade seuraavasta huoneesta
 level2Left.add_exit("right", level2Center)
 
 level1Right.add_exit("forward", level2Right) #GGoblin ja upgrade flint joka appendataan listaan, jolla päivitetään ase
 level2Right.add_exit("left", level2Center)
+
+level1Behind.add_exit("forward", level2Behind)
+level2Behind.add_exit("forward",level3Center) # go against the goblin master with Gratos
 
 level2Center.add_exit("forward", level3Center)
 level3Center.add_exit("forward", level0End)
@@ -46,11 +53,13 @@ current_room = level0Start
 level1Center.monster = goblin
 level1Left.monster = GGoblin
 level1Right.monster = GGoblin
+level1Behind.monster = GGoblin
 level3Center.monster = MGoblin
 
 #player
 player_name = input("Enter your name: ")
 player = Player(player_name, HP=100, inventory=[])
+gratos = Player("Gratos", HP=200, deals=50)
 
 #player age
 while True:
@@ -232,7 +241,7 @@ while True:
     print(f"\n{current_room.name}")
     #print(current_room.description)
 
-    if current_room.monster and current_room.monster.HP > 0:
+    if current_room.monster and current_room.monster.HP > 0:        # ASETA GRATOS TULEMAAN VIIMEISEEN BOSSIIN JOS PELAAJA VALITSEE OIKEAN ROUTEN
         print(f"{current_room.monster.name} is blocking your way.")
         while current_room.monster.HP > 0:
                 input("Press Enter to attack!\n")
@@ -276,6 +285,22 @@ while True:
                 break
             else:
                 print("I need to decide.")
+
+    if current_room == level1Behind and not current_room.item_collected:
+        print(f"{current_room.monster.name} dropped a leather armour and a glowing bottle?")
+        choiceMultiU = input("Take the armour and consume the glowing liquid?:\n     | YES |     | NO |\n").lower()
+
+        if choiceMultiU == "yes":
+            player.inventory.append("Leather armour")
+            player.HP = 100
+            player.HP += 50
+            custom.weapon.damage += 5
+            current_room.item_collected = True
+            print(f"{player.name}: Hmm... I feel... Great! And now I got a cool armour!")
+            print(f"Health restored and gained +50 HP and {custom.weapon.name} deals now {custom.weapon.damage} damage.")
+            print(f"Health now: {player.HP}")
+
+            
 
     if current_room == level2Right:
         #time.sleep(2)
@@ -330,6 +355,14 @@ while True:
         print(f"{player.name}: Oh yeeah!\n Weapon damage upgraded to {custom.weapon.damage}\n Health upgraded to {player.HP}.")
         time.sleep(1)
         print(f"{player.name}: I am ready to take the Goblin Master down!")
+
+    if current_room == level2Behind:
+        print(f"Orc: {player.name}?? Is it really you?")
+        print(f"{player.name}: Not a step closer I have a weapon and I know how to use it!")
+        print(f"Gratos: Woah!... Chillax {player.name}. It's me Gratos. Man I am glad I found you.")
+        print(f"{player.name}: Oh, it's just you. Gratos we don't have time. We have to defeat the Goblin Master!!")
+        print(f"Gratos: I saw the news {player.name}. I am with you!")
+        #appendataan Gratos tiimiin auttamaan goblin masterin kanssa
 
     if current_room == level3Center:
         print(f"{player.name}: I did it! {current_room.monster.name}, you have done a lot of bad things to the village.")
