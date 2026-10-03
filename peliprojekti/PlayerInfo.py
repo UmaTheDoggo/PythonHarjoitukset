@@ -1,7 +1,8 @@
 class Player:
-    def __init__(self, name, HP=100, inventory=None):
+    def __init__(self, name, HP, deals, inventory=None):
         self.name = name
         self.HP = HP
+        self.deals = deals
         self.inventory = inventory if inventory is not None else []
 
         self.weapon = None

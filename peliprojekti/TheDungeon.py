@@ -6,6 +6,7 @@ from monsters import Monster
 from room import Room
 from PlayerInfo import Player
 import json
+import os
 
 #weapons and monsters
 sword = Weapon("Sword", 6, 4)
@@ -27,7 +28,7 @@ level2Center = Room("Generator room", "Turn the generator into gear") # upgrade 
 level2Left = Room("Treatment room", "Health upgrade laying on the ground") # Health upgrade +100 HP
 level2Right = Room("An armory", "There is an anvil. I could sharpen my weapon") # Weapon upgrade +10 dmg
 level3Center = Room("The Goblin Master room", "A throneroom full of gold and diamonds.")# fight
-level2Behind = Room("A dim room", "He came to the dungeon looking for you.") # teamup with gratos
+level2Behind = Room("A dim room", "It is hard to see.") # teamup with gratos
 
 
 level1Center.add_exit("left", level1Left)
@@ -46,7 +47,7 @@ level2Behind.add_exit("forward",level3Center) # go against the goblin master wit
 level2Center.add_exit("forward", level3Center)
 level3Center.add_exit("forward", level0End)
 
-
+#aloitus huone
 current_room = level0Start
 
 #dungeon monsters
@@ -58,8 +59,11 @@ level3Center.monster = MGoblin
 
 #player
 player_name = input("Enter your name: ")
-player = Player(player_name, HP=100, inventory=[])
-gratos = Player("Gratos", HP=200, deals=50)
+player = Player(player_name, 100, 0, inventory=[])
+gratos = Player("Gratos", 200, 30, inventory=[])
+
+#Asetetaan ehto Gratoksen mahdolliselle polulle
+gratos_joined = False
 
 #player age
 while True:
@@ -78,13 +82,38 @@ print(" ")
 #player info
 player_info = print (f"Hello, {player_name}, Age: {player_age:.0f}")
 
-# save.txt = {
-#     "Player": Player.Name,
-#     "level": current_room
-#     "Inventory": Player.inventory
-#     "Weapon": Player.choose_weapon
-# }
+# f = open('intro.txt', 'r')
+# file_contents = f.read()
+# print(file_contents)
+# f.close
 
+# file_path = 'intro.txt'
+
+# try:
+#     with open(file_path, 'r') as file:
+#         file_lines = file.readlines()
+
+#         print("File Content:")
+#         for line in file_lines:
+#             print(line.strip())
+
+# except FileNotFoundError:
+#     print(f"File '{file_path}' not found.")
+# except Exception as e:
+#     print(f"An error occurred: {e}")
+
+script_dir = os.path.dirname(os.path.abspath(__file__))
+file_path = os.path.join(script_dir, 'intro.txt')
+
+try:
+    with open(file_path, 'r', encoding='utf-8') as file:
+        print(file.read())
+except FileNotFoundError:
+    print(f"File '{file_path}' not found.")
+except Exception as e:
+    print(f"An error occurred: {e}")
+
+input("Press enter to continue: ")
 
 while True:
     # time.sleep(1)
@@ -243,9 +272,15 @@ while True:
 
     if current_room.monster and current_room.monster.HP > 0:        # ASETA GRATOS TULEMAAN VIIMEISEEN BOSSIIN JOS PELAAJA VALITSEE OIKEAN ROUTEN
         print(f"{current_room.monster.name} is blocking your way.")
-        while current_room.monster.HP > 0:
-                input("Press Enter to attack!\n")
+
+        if gratos_joined == True:
+            print(f"Gratos lifts his axes and launches himself towards the {current_room.monster.name} dealing {gratos.deals} damage!")
+            current_room.monster.take_damage(gratos.deals)
+            print(f"{player.name}: Woah! That was a crazy move {gratos.name}")
         
+        while current_room.monster.HP > 0:
+                
+                input("Press Enter to attack!\n")
                 if custom.weapon.attack():
                     print(f"You swing your {custom.weapon.name} and hit the {current_room.monster.name} for {custom.weapon.damage} damage!")
                     current_room.monster.take_damage(custom.weapon.damage)
@@ -297,9 +332,12 @@ while True:
             custom.weapon.damage += 5
             current_room.item_collected = True
             print(f"{player.name}: Hmm... I feel... Great! And now I got a cool armour!")
+            print("Obtained: Leather armour. Type 'inventory' to check pockets.")
             print(f"Health restored and gained +50 HP and {custom.weapon.name} deals now {custom.weapon.damage} damage.")
             print(f"Health now: {player.HP}")
 
+        if choiceMultiU == "no":
+            print(f"{player.name}: I better not get too close to the {current_room.monster.name}.")
             
 
     if current_room == level2Right:
@@ -361,8 +399,9 @@ while True:
         print(f"{player.name}: Not a step closer I have a weapon and I know how to use it!")
         print(f"Gratos: Woah!... Chillax {player.name}. It's me Gratos. Man I am glad I found you.")
         print(f"{player.name}: Oh, it's just you. Gratos we don't have time. We have to defeat the Goblin Master!!")
-        print(f"Gratos: I saw the news {player.name}. I am with you!")
-        #appendataan Gratos tiimiin auttamaan goblin masterin kanssa
+        print(f"Gratos: I saw the news {player.name}. I am with you!\n")
+        gratos_joined = True
+        print(f"Gratos will now help you defeat the Master Goblin!\n")
 
     if current_room == level3Center:
         print(f"{player.name}: I did it! {current_room.monster.name}, you have done a lot of bad things to the village.")
