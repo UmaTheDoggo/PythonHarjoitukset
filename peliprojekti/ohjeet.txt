@@ -1,0 +1,12 @@
+This game is meant for people over the age of 12.
+Your decisions will lead the story and characters. Meaning there is no going back once the decision is made.
+
+Movement will happen with a keyboard. Which you will need to type in when given the chance.
+The available directions will be disblaued on the screen.
+
+The combat is randomized.
+Remember: better damage means lower chance to hit.
+Combat is pressing 'Enter' and hoping you will hit.
+There will always be a checkpoint before a fight.
+
+Choose a path and see where it leads... Good luck!

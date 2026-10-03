@@ -82,54 +82,18 @@ print(" ")
 #player info
 player_info = print (f"Hello, {player_name}, Age: {player_age:.0f}")
 
-# f = open('intro.txt', 'r')
-# file_contents = f.read()
-# print(file_contents)
-# f.close
 
-# file_path = 'intro.txt'
-
-# try:
-#     with open(file_path, 'r') as file:
-#         file_lines = file.readlines()
-
-#         print("File Content:")
-#         for line in file_lines:
-#             print(line.strip())
-
-# except FileNotFoundError:
-#     print(f"File '{file_path}' not found.")
-# except Exception as e:
-#     print(f"An error occurred: {e}")
-
-script_dir = os.path.dirname(os.path.abspath(__file__))
-file_path = os.path.join(script_dir, 'intro.txt')
-
-try:
-    with open(file_path, 'r', encoding='utf-8') as file:
-        print(file.read())
-except FileNotFoundError:
-    print(f"File '{file_path}' not found.")
-except Exception as e:
-    print(f"An error occurred: {e}")
+with open("ohjeet.txt", "r") as ohjeet:
+    data = ohjeet.read()
+    print(data)
 
 input("Press enter to continue: ")
 
 while True:
     # time.sleep(1)
-
-    print("""\
-------------------------------------------------------------------------------------------------------------------------
-__        __   _                            _          _____ _            ____                                     
-\ \      / /__| | ___ ___  _ __ ___   ___  | |_ ___   |_   _| |__   ___  |  _ \ _   _ _ __   __ _  ___  ___  _ __  
- \ \ /\ / / _ \ |/ __/ _ \| '_ ` _ \ / _ \ | __/ _ \    | | | '_ \ / _ \ | | | | | | | '_ \ / _` |/ _ \/ _ \| '_ \ 
-  \ V  V /  __/ | (_| (_) | | | | | |  __/ | || (_) |   | | | | | |  __/ | |_| | |_| | | | | (_| |  __/ (_) | | | |
-   \_/\_/ \___|_|\___\___/|_| |_| |_|\___|  \__\___/    |_| |_| |_|\___| |____/ \__,_|_| |_|\__, |\___|\___/|_| |_|
-                                                                                            |___/                  
-------------------------------------------------------------------------------------------------------------------------
-  | Start |     | Customise |     | Info |     | Quit |                                                                          
-
-""")
+    with open("menu.txt", "r") as menu:
+        data = menu.read()
+        print(data)
     
     navigation = input("Type to navigate: ").lower()
     if navigation == "customise":
@@ -159,7 +123,11 @@ __        __   _                            _          _____ _            ____
         sys.exit("Quitting game...")
 
     if navigation == "start":
-        break
+        with open("intro.txt", "r") as tiedosto:
+            data = tiedosto.read()
+            print(data)
+    input("Press enter to continue: ")
+    break
 
 if Player.set_hat_color is None:
     Player.hat_color = input("Choose the color of the hat: ").lower()
