@@ -6,7 +6,6 @@ from monsters import Monster
 from room import Room
 from PlayerInfo import Player
 import json
-import os
 
 #weapons and monsters
 sword = Weapon("Sword", 6, 4)
@@ -35,7 +34,6 @@ level2Left = Room("Treatment room", "Health upgrade laying on the ground") # Hea
 level2Right = Room("An armory", "There is an anvil. I could sharpen my weapon") # Weapon upgrade +10 dmg
 level3Center = Room("The Goblin Master room", "A throneroom full of gold and diamonds.")# fight
 level2Behind = Room("A dim room", "It is hard to see.") # teamup with gratos
-
 
 level1Center.add_exit("left", level1Left)
 level1Center.add_exit("right", level1Right)
@@ -153,7 +151,7 @@ while True:
             break
             
         except FileNotFoundError:
-            print("\nVirhe: Tallennustiedostoa (savegame.json) ei löytynyt. Aloita uusi peli.\n")
+            print("\n Saved game file not found: Start a new game. \n")
             input("Press Enter to continue: ")
              
     elif navigation == "quit":
@@ -450,7 +448,7 @@ while True:
         with open("savegame.json", "w", encoding="utf-8") as file:
             json.dump(game_data, file, indent=4)
         
-        print("[Peli tallennettu automaattisesti savegame.json -tiedostoon]")
+        print("Game saved...")
         
     else:
         print("A stone wall is blocking the way")
