@@ -12,7 +12,7 @@ import os
 sword = Weapon("Sword", 6, 4)
 axe = Weapon("Axe", 12, 3)
 
-goblin = Monster("Goblin", 20, 5)
+Goblin = Monster("Goblin", 20, 5)
 GGoblin = Monster("Giant Goblin", 50, 10)
 MGoblin = Monster("Goblin Master", 100, 30)
 
@@ -51,16 +51,15 @@ level3Center.add_exit("forward", level0End)
 current_room = level0Start
 
 #dungeon monsters
-level1Center.monster = goblin
+level1Center.monster = Goblin
 level1Left.monster = GGoblin
 level1Right.monster = GGoblin
 level1Behind.monster = GGoblin
 level3Center.monster = MGoblin
 
 #player
-player_name = input("Enter your name: ")
-player = Player(player_name, 100, 0, inventory=[])
-gratos = Player("Gratos", 200, 30, inventory=[])
+player = Player("Unknown", 0, 100, 0, inventory=[])
+gratos = Player("Gratos", 158, 200, 30, inventory=[])
 
 #Asetetaan ehto Gratoksen mahdolliselle polulle
 gratos_joined = False
@@ -69,6 +68,7 @@ gratos_joined = False
 while True:
     try:
         player_age = int(input("Enter your age: "))
+        Player.age = player_age
         break
     except ValueError:
         print("Error: Set value is not a number. Try again")
@@ -79,8 +79,6 @@ if player_age < 12:
 
 print(" ")
 
-#player info
-player_info = print (f"Hello, {player_name}, Age: {player_age:.0f}")
 
 
 with open("ohjeet.txt", "r") as ohjeet:
@@ -96,43 +94,29 @@ while True:
         print(data)
     
     navigation = input("Type to navigate: ").lower()
-    if navigation == "customise":
-        player.hat_color = input("Enter a hat color: ").lower()
-        player.jacket_color = input("Enter jacket color: ").lower()
-        player.jeans_color = input("Enter jeans color: ").lower()
-
     if navigation == "info":
-        print(f"Name: {player.name}, Age {player_age:.0f}")
-
-        if player.hat_color is None:
-            print("Color of hat not set")
-        else:
-             print(f"Color of hat: {player.hat_color}")
-
-        if player.jacket_color is None:
-            print("Color of jacket not set")
-        else:
-            print(f"Color of jacket: {player.jacket_color}")
-
-        if player.jeans_color is None:
-            print("Color of jeans not set")
-        else:
-             print(f"Color of jeans: {player.jeans_color}")
+        print(f"Name: {player.name} Age: {Player.age}")
+        print(f"Inventory: {player.inventory}")
+        input("Press Enter to continue: ")
              
-    if navigation == "quit":
+    elif navigation == "quit":
         sys.exit("Quitting game...")
 
-    if navigation == "start":
+    elif navigation == "start":
         with open("intro.txt", "r") as tiedosto:
             data = tiedosto.read()
             print(data)
-    input("Press enter to continue: ")
-    break
+        input("Press enter to continue: ")
+        break
 
-if Player.set_hat_color is None:
-    Player.hat_color = input("Choose the color of the hat: ").lower()
-    Player.jacket_color = input("Choose the color of the jacket: ").lower()
-    Player.jeans_color = input("Choose the color of the jeans: ").lower()
+    else:
+        print("This is not a menu option. Type again.")
+
+player_name = input("Enter your name: ")
+Player.name = player_name
+#player info
+#player_info = print (f"Hello, {player_name}, Age: {player_age:.0f}")
+player_info = print (f"Hello, {Player.name} Age: {Player.age}")
 
 print("Stranger: Hey, you. You're finally awake! How are you feeling?")
 print("| Good |     | Bad |")
@@ -185,17 +169,11 @@ print(f"{player_name}: Huh..? How did I end up in the Dungeon?")
 print(f"{player_name}: It's dangerous, I need to move.")
 # time.sleep(1)
 print(f"{player_name}: There's something in my pocket... A poster?")
-print("""\
-_______________________________________________
---THE LOCAL DUNGEON RELEASING TOXINS TO LAKES--
------------------------------------------------
-A local Goblin master is running an illegal ge-
-nerator in the dungeon which releases toxins
-to the nearby lake. Villagers have been...
-_______________________________________________
 
-.... Rest of the page was torn. 
-""")
+with open("news.txt", "r") as news:
+    data = news.read()
+    print(data)
+    input("Press Enter to continue: ")
 
 # time.sleep(3)
 print(f"{player_name}: I need to stop the Goblin Master!")
@@ -389,8 +367,16 @@ while True:
 
 
     if current_room == level0End:
-        print("Gratos greets you and the whole villagers celebrate for saving them.")
-        break
+        if gratos_joined == True:
+            with open("ending2.txt", "r") as end2:
+                data = end2.read()
+                print(data)
+                break
+        else:
+            with open("ending1.txt", "r") as end1:
+                data = end1.read()
+                print(data)
+                break
 
         
     available_exits = list(current_room.exits.keys())

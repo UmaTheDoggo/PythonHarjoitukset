@@ -1,27 +1,16 @@
 class Player:
-    def __init__(self, name, HP, deals, inventory=None):
+    def __init__(self, name, age, HP, deals, inventory=None):
         self.name = name
+        self.age = age
         self.HP = HP
         self.deals = deals
         self.inventory = inventory if inventory is not None else []
 
-        self.weapon = None
-        self.hat_color = None
-        self.jacket_color = None
-        self.jeans_color = None
+        #self.weapon = None
 
     def choose_weapon(self, wpn):
         self.weapon = wpn
         print(f"Weapon set to: {self.weapon.name}")
-
-    def set_hat_color(self, color):
-        self.hat_color = color
-
-    def set_jacket_color(self, color):
-        self.jacket_color = color
-
-    def set_jeans_color(self, color):
-        self.jeans_color = color
 
     def take_damage(self, amount):
         self.HP = max(0, self.HP - amount)
