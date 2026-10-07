@@ -7,10 +7,6 @@ class Player:
         self.deals = deals
         self.inventory = inventory if inventory is not None else []
 
-    def choose_weapon(self, wpn):
-        self.weapon = wpn
-        print(f"Weapon set to: {self.weapon.name}")
-
     def take_damage(self, amount):
         self.HP = max(0, self.HP - amount)
         print(f"{self.name} took damage. I have {self.HP} of health left \n")
