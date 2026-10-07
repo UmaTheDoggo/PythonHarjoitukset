@@ -1,3 +1,4 @@
+#Määritetään pelaajan nimi, ikä elämäpisteet, paljon vahinkoa tekee ja tavaraluettelo
 class Player:
     def __init__(self, name, age, HP, deals, inventory=None):
         self.name = name
@@ -5,8 +6,6 @@ class Player:
         self.HP = HP
         self.deals = deals
         self.inventory = inventory if inventory is not None else []
-
-        #self.weapon = None
 
     def choose_weapon(self, wpn):
         self.weapon = wpn
