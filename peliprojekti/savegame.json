@@ -1,12 +1,12 @@
 {
-    "player_name": "leevi",
+    "player_name": "Leevi",
     "player_age": 22,
-    "player_hp": 110,
+    "player_hp": 140,
     "player_inventory": [
         "Leather armour"
     ],
-    "weapon_name": "Axe",
-    "weapon_damage": 27,
+    "weapon_name": "Sword",
+    "weapon_damage": 21,
     "current_room": "Fields",
     "gratos_joined": true
 }

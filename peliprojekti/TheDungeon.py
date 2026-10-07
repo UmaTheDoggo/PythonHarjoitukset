@@ -1,6 +1,5 @@
 import sys
 import time
-import custom
 from weapons import Weapon
 from monsters import Monster
 from room import Room
@@ -10,6 +9,7 @@ import json
 #weapons and monsters
 sword = Weapon("Sword", 6, 4)
 axe = Weapon("Axe", 12, 3)
+weapon_choice = None
 
 # Tehdään sanakirja asekoodia varten, jotta tiedetään mikä ase ladataan nimen perusteella
 weapon_directory = {
@@ -113,8 +113,8 @@ while True:
     if navigation == "info":
         print(f"Name: {player.name} Age: {player.age}")
         print(f"Inventory: {player.inventory}")
-        if hasattr(custom, 'weapon'):
-            print(f"Weapon: {custom.weapon.name} (Damage: {custom.weapon.damage})")
+        if weapon_choice is not None:
+            print(f"Weapon: {weapon_choice.name} (Damage: {weapon_choice.damage})")
         else:
             print("Weapon: None")
         input("Press Enter to continue: ")
@@ -135,17 +135,17 @@ while True:
                 weapon_damage = loaded_data.get("weapon_damage", 6)
                 
                 if weapon_name in weapon_directory:
-                    custom.weapon = weapon_directory[weapon_name]
+                    weapon_choice = weapon_directory[weapon_name]
                 else:
-                    custom.weapon = sword
-                custom.weapon.damage = weapon_damage  # Palautetaan päivitetty vaurio (esim. jos sitä on paranneltu)
+                    weapon_choice = sword
+                weapon_choice.damage = weapon_damage  # Palautetaan päivitetty vaurio (esim. jos sitä on paranneltu)
                 
                 room_name = loaded_data["current_room"]
                 if room_name in room_directory:
                     current_room = room_directory[room_name]
                 
             print("Game loaded...")
-            print(f"Welcome back, {player.name} (HP: {player.HP}, Weapon: {custom.weapon.name} DMG: {custom.weapon.damage})!\n")
+            print(f"Welcome back, {player.name} (HP: {player.HP}, Weapon: {weapon_choice.name} DMG: {weapon_choice.damage})!\n")
             input("Press Enter to continue game: ")
             game_loaded = True  # Merkitään, että peli ladattiin
             break
@@ -171,7 +171,7 @@ while True:
 if not game_loaded:
     player.name = input("Enter your name: ")
     player_info = print (f"Hello, {player.name} Age: {player.age}")
-
+    time.sleep(1)
     print("Stranger: Hey, you. You're finally awake! How are you feeling?")
     print("| Good |     | Bad |")
     answer1 = input(f"{player.name}: ").lower()
@@ -182,10 +182,15 @@ if not game_loaded:
     else:
         print("Stranger: Hmm... Not quite sure if I understand. You took a bit of a fall.")
 
+    time.sleep(1)
     print("Stranger: Do you remember your name?")
+    time.sleep(1)
     print(f"{player.name}: Yes, my name is {player.name}.")
+    time.sleep(1)
     print(f"Gratos: Haha, nice to meet you {player.name}! My name is Gratos.")
+    time.sleep(1)
     print("Gratos: It seems you do not have a weapon yet. Here in the dungeon you will need one.")
+    time.sleep(1)
     print("Gratos: I don't have much, but you can choose one from me.")
     print("Sword (6 dmg), 5/6 hit chance |  Axe (12 dmg), 4/6 hit chance |  Napkin (0 dmg)")
 
@@ -193,13 +198,13 @@ if not game_loaded:
         weapon_choice = input("Choose weapon: ").lower()
         
         if weapon_choice == "sword":
-            custom.weapon = sword
-            print(f"Gratos: Ahhh, good old {custom.weapon.name}")
+            weapon_choice = sword
+            print(f"Gratos: Ahhh, good old {weapon_choice.name}")
             break
             
         elif weapon_choice == "axe":
-            custom.weapon = axe
-            print(f"Gratos: Ahhh, good old {custom.weapon.name}")
+            weapon_choice = axe
+            print(f"Gratos: Ahhh, good old {weapon_choice.name}")
             break
             
         elif weapon_choice == "napkin":
@@ -209,10 +214,17 @@ if not game_loaded:
             print("Gratos: That's not a valid weapon. Try again.")
 
     print(f"Gratos: {player.name} WATCH OUT! A .....")
+    time.sleep(1)
+    time.sleep(1)
+    time.sleep(1)
     print(f"{player.name}: Wha... Where am I?")
+    time.sleep(1)
     print(f"{player.name}: Huh..? How did I end up in the Dungeon?")
+    time.sleep(1)
     print(f"{player.name}: It's dangerous, I need to move.")
+    time.sleep(1)
     print(f"{player.name}: There's something in my pocket... A poster?")
+    time.sleep(2)
 
     with open("news.txt", "r") as news:
         data = news.read()
@@ -240,11 +252,11 @@ if not game_loaded:
             while current_room.monster.HP > 0:
                 input(f"Press Enter to attack the {current_room.monster.name}!")
 
-                if custom.weapon.attack():
-                    print(f"You swing your {custom.weapon.name} and hit the {current_room.monster.name} for {custom.weapon.damage} damage!")
-                    current_room.monster.take_damage(custom.weapon.damage)
+                if weapon_choice.attack():
+                    print(f"You swing your {weapon_choice.name} and hit the {current_room.monster.name} for {weapon_choice.damage} damage!")
+                    current_room.monster.take_damage(weapon_choice.damage)
                 else:
-                    print(f"You swing your {custom.weapon.name}, but you missed! You took 5 damage.\n")
+                    print(f"You swing your {weapon_choice.name}, but you missed! You took 5 damage.\n")
                     player.take_damage(5)
                     if player.HP <=0:
                         sys.exit(f"You were slain by {current_room.monster.name}")
@@ -252,7 +264,7 @@ if not game_loaded:
         else:
             print("I need to decide quickly!!!")
 
-# Varsinainen pelisilmukka
+# combat loop
 while True:
     print(f"\n{current_room.name}")
 
@@ -262,15 +274,16 @@ while True:
         if gratos_joined == True:
             print(f"Gratos lifts his axes and launches himself towards the {current_room.monster.name} dealing {gratos.deals} damage!")
             current_room.monster.take_damage(gratos.deals)
+            time.sleep(2)
             print(f"{player.name}: Woah! That was a crazy move {gratos.name}")
         
         while current_room.monster.HP > 0:
                 input("Press Enter to attack!\n")
-                if custom.weapon.attack():
-                    print(f"You swing your {custom.weapon.name} and hit the {current_room.monster.name} for {custom.weapon.damage} damage!")
-                    current_room.monster.take_damage(custom.weapon.damage)
+                if weapon_choice.attack():
+                    print(f"You swing your {weapon_choice.name} and hit the {current_room.monster.name} for {weapon_choice.damage} damage!")
+                    current_room.monster.take_damage(weapon_choice.damage)
                 else:
-                    print(f"You swing your {custom.weapon.name}, but you missed!")
+                    print(f"You swing your {weapon_choice.name}, but you missed!")
                     player.take_damage(current_room.monster.deals)
                     if player.HP <=0:
                         sys.exit(f"You were slain by {current_room.monster.name}")
@@ -313,11 +326,14 @@ while True:
             player.inventory.append("Leather armour")
             player.HP = 100
             player.HP += 50
-            custom.weapon.damage += 5
+            weapon_choice.damage += 5
             current_room.item_collected = True
             print(f"{player.name}: Hmm... I feel... Great! And now I got a cool armour!")
+            time.sleep(1)
             print("Obtained: Leather armour. Type 'inventory' to check pockets.")
-            print(f"Health restored and gained +50 HP and {custom.weapon.name} deals now {custom.weapon.damage} damage.")
+            time.sleep(1)
+            print(f"Health restored and gained +50 HP and {weapon_choice.name} deals now {weapon_choice.damage} damage.")
+            time.sleep(1)
             print(f"Health now: {player.HP}")
 
         if choiceMultiU == "no":
@@ -333,9 +349,9 @@ while True:
                 choiceUpgrade = input("Use smithing stone and upgrade weapon for +10 damage?: ").lower()
 
                 if choiceUpgrade == "yes":
-                    custom.weapon.damage += 10
+                    weapon_choice.damage += 10
                     player.inventory.remove("smithing stone")
-                    print(f"{custom.weapon.name} upgraded for +10! It now deals {custom.weapon.damage} damage.")
+                    print(f"{weapon_choice.name} upgraded for +10! It now deals {weapon_choice.damage} damage.")
                     break
 
                 if choiceUpgrade == "no":
@@ -371,25 +387,33 @@ while True:
         time.sleep(1)
         print("Poks")
         player.HP += 50
-        custom.weapon.damage += 10
+        weapon_choice.damage += 10
         current_room.item_collected = True
-        print(f"{player.name}: Oh yeeah!\n Weapon damage upgraded to {custom.weapon.damage}\n Health upgraded to {player.HP}.")
+        print(f"{player.name}: Oh yeeah!\n Weapon damage upgraded to {weapon_choice.damage}\n Health upgraded to {player.HP}.")
         time.sleep(1)
         print(f"{player.name}: I am ready to take the Goblin Master down!")
 
     if current_room == level2Behind:
         print(f"Orc: {player.name}?? Is it really you?")
+        time.sleep(1)
         print(f"{player.name}: Not a step closer I have a weapon and I know how to use it!")
+        time.sleep(1)
         print(f"Gratos: Woah!... Chillax {player.name}. It's me Gratos. Man I am glad I found you.")
+        time.sleep(1)
         print(f"{player.name}: Oh, it's just you. Gratos we don't have time. We have to defeat the Goblin Master!!")
+        time.sleep(1)
         print(f"Gratos: I saw the news {player.name}. I am with you!\n")
+        time.sleep(1)
         gratos_joined = True
         print(f"Gratos will now help you defeat the Master Goblin!\n")
 
     if current_room == level3Center:
         print(f"{player.name}: I did it! {current_room.monster.name}, you have done a lot of bad things to the village.")
+        time.sleep(1)
         print(f"{current_room.monster.name}: Me knows.... Feel bad I do.. Me just wanted to mine shiny ores.")
+        time.sleep(1)
         print(f"{player.name}: I stopped the pollution coming from your generator and recycled the materials to upgrade my gear totally carbon neutral")
+        time.sleep(1)
         print(f"{current_room.monster.name}: Wooooww... Incredible craftmanship me say!")
         time.sleep(1)
         print(f"{player.name}: Look {current_room.monster.name}. You don't need coal to power these machines.")
@@ -421,8 +445,8 @@ while True:
 
     elif move == "inventory":
         print(f"\nInventory: {player.inventory}")
-        if hasattr(custom, 'weapon'):
-            print(f"Weapon: {custom.weapon.name} (Damage: {custom.weapon.damage})\n")
+        if weapon_choice is not None:
+            print(f"Weapon: {weapon_choice.name} (Damage: {weapon_choice.damage})\n")
         else:
             print("Weapon: None\n")
         continue
@@ -431,8 +455,8 @@ while True:
         current_room = current_room.exits[move]
         
         #tallennus JSON tiedostoon (mukaan lukien aseen nimi ja sen senhetkinen vaurio)
-        current_weapon_name = custom.weapon.name if hasattr(custom, 'weapon') else "Sword"
-        current_weapon_damage = custom.weapon.damage if hasattr(custom, 'weapon') else 6
+        current_weapon_name = weapon_choice.name if weapon_choice else "Sword"
+        current_weapon_damage = weapon_choice.damage if weapon_choice else 6
         
         game_data = {
             "player_name": player.name,
