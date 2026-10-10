@@ -20,7 +20,7 @@ Eli huoneesta poistuminen, onko huoneessa hirviö ja onko huoneen esine kerätty
 
 -- KASVAVANKEHITYKSEN AIHE --
 
-Pelissä on otettu huomioon kasvavankehityksen aihe: Ekologinen kestävyys.
+Pelissä on otettu huomioon kasvavankehityksen aihe: Ekologinen kestävyys, eli vastuullinen kulutus ja ilmastoteot.
 Tuhoamalla Mestari Peikon generaattori, joka on luonut saastumista kylän alueelle. Voidaan kierrättää generaattorin osat ja luoda hahmolle parempi ase ja haarniskaat.
 Pelin lopussa opetetaan Mestari peikolle, miten hän voi jatkaa kaivostöitä hiilineutraalisti ja vesistö puhdistetaan.
 
