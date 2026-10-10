@@ -3,8 +3,16 @@ The Dungeon
 Leevi Luukkonen
 
 ---
+-- Tarina --
 
--- RAKENNE --
+Pelissä hahmo teleporttaa toiseen maailmaan. Hän tapaa Gratoksen, joka on ystävällinen örkki. Hän tarjoaa apua antamalle pelaajalle aseen. Pelaaja joutuu yhtäkkiä luolastoon, jossa hän saa pelin päätavoitteen,
+joka on pysäyttää kylän alueen saastuminen tuhoamalla Mestari Peikon generaattori. Pelaaja valitsee polun luolastossa, taistelee ja päivittää halutessaan pelihahmoa. Pelin loppuvaiheessa generaattori tuhotaan
+ja generaattorin romut hyötykäytetään luomalla parannettu haarniska ja ase, eli parannetaan elämäpisteiden ja aseen vahinkoa. Mestari Peikon selätyksen jälkeen hänelle opetetaan miten tuhotun generaattorin
+voi korvata hiilineutraalisti ja vesistö puhdistetaan kyläläisten ja peikkojen yhteistyöllä.
+
+---
+
+-- Rakenne --
 
 The Dungeonin rakenne koostuu päätiedostosta TheDungeon.py, jossa on hahmojen dialogi, polkuvalinnat ja asevalinnat
 Hahmot, aseet ja monsterit luodaan TheDungeon koodissa käyttäen importattua koodia PlayerInfo.py, monsters.py ja weapons.py
@@ -18,7 +26,7 @@ Eli huoneesta poistuminen, onko huoneessa hirviö ja onko huoneen esine kerätty
 
 ---
 
--- KASVAVANKEHITYKSEN AIHE --
+-- Kasvavan kehityksen aihe --
 
 Pelissä on otettu huomioon kasvavankehityksen aihe: Ekologinen kestävyys, eli vastuullinen kulutus ja ilmastoteot.
 Tuhoamalla Mestari Peikon generaattori, joka on luonut saastumista kylän alueelle. Voidaan kierrättää generaattorin osat ja luoda hahmolle parempi ase ja haarniskaat.
